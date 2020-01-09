@@ -71,11 +71,8 @@ function ajax_check(mese){
         "method":"GET",
         "success": function(data_success){
             //
-            console.log(data_success.response.length);
             for (var j = 0; j < data_success.response.length; j++) {
-                console.log(data_success.response[j].date);
                 var data_festiva = moment(data_success.response[j].date);
-                console.log(data_festiva);
                 $("li").each(function() {
                     // Traduco questo ciclo: se la data selezionata corrisponde a una di quelle festive, fai qualcosa, altrimenti no!
                     if (($(this).text())==(data_festiva.format("Do"))) {
