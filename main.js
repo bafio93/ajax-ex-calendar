@@ -70,8 +70,6 @@ function ajax_check(mese){
         "url": "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month="+(mese - 1), // Cambiare month per adattarlo al formato di moment.
         "method":"GET",
         "success": function(data_success){
-
-
             //
             console.log(data_success.response.length);
             for (var j = 0; j < data_success.response.length; j++) {
@@ -79,8 +77,11 @@ function ajax_check(mese){
                 var data_festiva = moment(data_success.response[j].date);
                 console.log(data_festiva);
                 $("li").each(function() {
+                    // Traduco questo ciclo: se la data selezionata corrisponde a una di quelle festive, fai qualcosa, altrimenti no!
                     if (($(this).text())==(data_festiva.format("Do"))) {
                         $(this).addClass("festive");
+                        var data_risultante = data_festiva.format("Do") + " -> " + data_success.response[j].name;
+                        $(this).text(data_risultante);
                     }
                 });
             }
