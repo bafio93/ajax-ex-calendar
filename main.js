@@ -2,46 +2,25 @@ $(document).ready(function(){
     // Setto il mese iniziale come gennaio 2018.
     var mese = 01;
     compila_calendario(mese);
+    ajax_check(mese);
 
     // Se clicco next, mese +1. A meno che non sia mese == 12.
     $("#next").click(function() {
         if (mese != 12) {
             mese = mese + 1;
             compila_calendario(mese);
+            ajax_check(mese);
         }
     });
+
     // Se clicco prev, mese -1. A meno che non sia mese == 1.
     $("#prev").click(function() {
         if (mese != 1) {
             mese = mese - 1;
             compila_calendario(mese);
+            ajax_check(mese);
         }
     });
-    // Parte della chiamata ajax.
-    $.ajax ({
-        "url": "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month="+(mese - 1), // cambiare month
-        "method":"GET",
-        "success": function(data_success){
-
-
-            //
-            console.log(data_success.response.length);
-            for (var j = 0; j < data_success.response.length; j++) {
-                console.log(data_success.response[j].date);
-                var data_festiva = moment(data_success.response[j].date);
-                console.log(data_festiva);
-                $("li").each(function() {
-                    if (($(this).text())==(data_festiva.format("Do"))) {
-                        $(this).addClass("festive");
-                    }
-                });
-            }
-            //
-        },
-        "error": function(){
-            alert("ERROR! -.-");
-        }
-    })
 });
 
 // FUNZIONI:
@@ -83,4 +62,32 @@ function button_eraser(mese){
     } else if (mese == 12) {
         $("button#next").addClass("disattivato");
     }
+};
+
+// FUNZIONE AJAX: CHECK
+function ajax_check(mese){
+    $.ajax ({
+        "url": "https://flynn.boolean.careers/exercises/api/holidays?year=2018&month="+(mese - 1), // Cambiare month per adattarlo al formato di moment.
+        "method":"GET",
+        "success": function(data_success){
+
+
+            //
+            console.log(data_success.response.length);
+            for (var j = 0; j < data_success.response.length; j++) {
+                console.log(data_success.response[j].date);
+                var data_festiva = moment(data_success.response[j].date);
+                console.log(data_festiva);
+                $("li").each(function() {
+                    if (($(this).text())==(data_festiva.format("Do"))) {
+                        $(this).addClass("festive");
+                    }
+                });
+            }
+            //
+        },
+        "error": function(){
+            alert("ERROR! -.-");
+        }
+    })
 }
